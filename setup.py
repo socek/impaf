@@ -6,6 +6,7 @@ install_requires = [
     'morfdict',
     'pytest-cov',
     'pytest',
+    'sphinx',
 ]
 
 
