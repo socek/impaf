@@ -7,6 +7,8 @@ install_requires = [
     'pytest-cov',
     'pytest',
     'sphinx',
+    'pyyaml',
+    'mock',
 ]
 
 

@@ -1,6 +1,7 @@
 from pyramid.config import Configurator
 
 from .settings import SettingsFactory
+from .routing import Routing
 
 
 class Application(object):
@@ -25,6 +26,7 @@ class Application(object):
         self._generate_settings(settings, settings_name)
         self._create_config()
         self._generate_registry(self.config.registry)
+        self._create_routing()
         self._generate_routes()
 
     def _generate_settings(self, settings, endpoint, factory=SettingsFactory):
@@ -48,6 +50,9 @@ class Application(object):
     def _generate_registry(self, registry):
         registry['settings'] = self.settings
         registry['paths'] = self.paths
+
+    def _create_routing(self):
+        self.routing = Routing(self)
 
     def _generate_routes(self):
         pass
