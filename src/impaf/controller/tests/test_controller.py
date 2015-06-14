@@ -144,10 +144,11 @@ class TestControllerUtils(ControllerFixtures):
 
         assert controller.response == mHTTPFound.return_value
         mHTTPFound.assert_called_once_with(
-            mrequest.route_url(
-                'somewhere',
-                kw='arg',
-            )
+            location=mrequest.route_url.return_value
+        )
+        mrequest.route_url.assert_called_once_with(
+            'somewhere',
+            kw='arg',
         )
 
     def test_redirect_with_quit(self, controller):

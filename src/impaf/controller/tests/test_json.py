@@ -12,4 +12,3 @@ class TestJsonController(ControllerFixtures):
 
     def test_normal_run(self, controller):
         assert controller() == {}
-        assert controller.response == {}
