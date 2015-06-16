@@ -132,12 +132,12 @@ class TestControllerUtils(ControllerFixtures):
         mhelper = MagicMock()
         controller.context = {}
 
-        controller.add_helper('myname', mhelper, 'arg', kw='kwarg')
+        controller.add_helper('myname', mhelper)
 
         assert controller.context == {
-            'myname': mhelper.return_value,
+            'myname': mhelper,
         }
-        mhelper.assert_called_once_with(mrequest, 'arg', kw='kwarg')
+        mhelper.feed_request.assert_called_once_with(mrequest)
 
     def test_redirect(self, controller, mrequest, mHTTPFound):
         controller.redirect('somewhere', kw='arg')

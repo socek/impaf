@@ -11,5 +11,6 @@ class ControllerUtils(object):
         if quit:
             raise QuitController(self.response)
 
-    def add_helper(self, name, cls, *args, **kwargs):
-        self.context[name] = cls(self.request, *args, **kwargs)
+    def add_helper(self, name, obj):
+        obj.feed_request(self.request)
+        self.context[name] = obj
