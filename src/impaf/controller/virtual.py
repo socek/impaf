@@ -13,7 +13,7 @@ class ControllerVirtuals(object):
     def _after_make(self):
         pass
 
-    def _create_helpers(self):
+    def _create_widgets(self):
         pass
 
     def _before_quit(self):

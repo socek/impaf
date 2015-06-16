@@ -30,9 +30,9 @@ class ExampleController(Controller):
         super()._after_make()
         self.runned['_after_make'] = True
 
-    def _create_helpers(self):
-        super()._create_helpers()
-        self.runned['_create_helpers'] = True
+    def _create_widgets(self):
+        super()._create_widgets()
+        self.runned['_create_widgets'] = True
 
     def _before_quit(self):
         super()._before_quit()
@@ -77,7 +77,7 @@ class TestController(ControllerFixtures):
             '_before_context': True,
             '_before_make': True,
             '_after_make': True,
-            '_create_helpers': True,
+            '_create_widgets': True,
         }
 
     def test_on_response_setted(self, controller):
@@ -128,16 +128,16 @@ class TestControllerUtils(ControllerFixtures):
         with patcher as mock:
             yield mock
 
-    def test_add_helper(self, controller, mrequest):
-        mhelper = MagicMock()
+    def test_add_widget(self, controller, mrequest):
+        mwidget = MagicMock()
         controller.context = {}
 
-        controller.add_helper('myname', mhelper)
+        controller.add_widget('myname', mwidget)
 
         assert controller.context == {
-            'myname': mhelper,
+            'myname': mwidget,
         }
-        mhelper.feed_request.assert_called_once_with(mrequest)
+        mwidget.feed_request.assert_called_once_with(mrequest)
 
     def test_redirect(self, controller, mrequest, mHTTPFound):
         controller.redirect('somewhere', kw='arg')

@@ -1,7 +1,7 @@
 from .requestable import Requestable
 
 
-class Helper(Requestable):
+class Widget(Requestable):
 
     def feed_request(self, request):
         super().feed_request(request)

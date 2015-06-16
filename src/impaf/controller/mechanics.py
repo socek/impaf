@@ -18,7 +18,7 @@ class ControllerMechanics(object):
             self._before_make()
             self._make()
             self._after_make()
-            self._create_helpers()
+            self._create_widgets()
             return self._get_response()
         except QuitController as end:
             self._before_quit()
@@ -41,7 +41,7 @@ class ControllerMechanics(object):
 
     def _get_response(self):
         if self.response is None:
-            self._create_helpers()
+            self._create_widgets()
             return self.context
         else:
             return self.response
