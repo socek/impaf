@@ -9,6 +9,9 @@ class Application(object):
     def __init__(self, module):
         self.module = module
 
+    def __call__(self, settings={}):
+        return self.run_uwsgi(settings)
+
     def run_uwsgi(self, settings={}):
         self._create_app(settings, 'uwsgi')
         return self._return_wsgi_app()
@@ -36,7 +39,7 @@ class Application(object):
         self.paths = paths
 
     def _get_settings_module(self):
-        return '%s.application.settings' % (self.module, )
+        return '%s.application' % (self.module, )
 
     def _create_config(self):
         kwargs = self._get_config_kwargs()
