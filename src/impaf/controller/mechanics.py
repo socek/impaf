@@ -1,10 +1,11 @@
 from .exceptions import QuitController, FinalizeController
+from impaf.requestable import Requestable
 
 
-class ControllerMechanics(object):
+class ControllerMechanics(Requestable):
 
     def __init__(self, root_factory, request):
-        self.request = request
+        self.feed_request(request)
         self.root_factory = root_factory
         self.response = None
 
