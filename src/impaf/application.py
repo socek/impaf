@@ -1,3 +1,6 @@
+from importlib import import_module
+from os import path
+
 from pyramid.config import Configurator
 
 from .settings import SettingsFactory
@@ -32,14 +35,28 @@ class Application(object):
         self._create_routing()
         self._generate_routes()
 
-    def _generate_settings(self, settings, endpoint, factory=SettingsFactory):
+    def _generate_settings(
+        self,
+        settings,
+        endpoint,
+        factorycls=SettingsFactory,
+    ):
+        self.settings = settings
+        self.paths = {}
+        self._populte_default_settings()
         settings_module = self._get_settings_module()
-        settings, paths = factory(settings_module).get_for(endpoint)
+        factory = factorycls(settings_module, self.settings, self.paths)
+        settings, paths = factory.get_for(endpoint)
         self.settings = settings
         self.paths = paths
 
     def _get_settings_module(self):
         return '%s.application' % (self.module, )
+
+    def _populte_default_settings(self):
+        module = import_module(self.module)
+        self.settings['project'] = self.module
+        self.paths['project'] = path.dirname(module.__file__)
 
     def _create_config(self):
         kwargs = self._get_config_kwargs()
