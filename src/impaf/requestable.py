@@ -24,6 +24,7 @@ class ImpafRequest(Request):
 
     def __init__(self, request):
         self.__dict__ = request.__dict__
+        self._cache = {}
 
     @property
     def settings(self):
