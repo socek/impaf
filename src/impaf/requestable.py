@@ -5,19 +5,44 @@ class Requestable(object):
 
     def feed_request(self, request):
         self._convert_request(request)
-        self._unpack_request(self.request)
 
     def _convert_request(self, request):
-        self.request = ImpafRequest(request)
+        cls = self._get_request_cls()
+        if type(request) is cls:
+            self.request = request
+        else:
+            self.request = cls(request)
 
-    def _unpack_request(self, request):
-        self.registry = request.registry
-        self.POST = request.POST
-        self.GET = request.GET
-        self.matchdict = request.matchdict
-        self.route_path = request.route_path
-        self.settings = self.registry['settings']
-        self.paths = self.registry['paths']
+    def _get_request_cls(self):
+        return ImpafRequest
+
+    @property
+    def registry(self):
+        return self.request.registry
+
+    @property
+    def POST(self):
+        return self.request.POST
+
+    @property
+    def GET(self):
+        return self.request.GET
+
+    @property
+    def matchdict(self):
+        return self.request.matchdict
+
+    @property
+    def route_path(self):
+        return self.request.route_path
+
+    @property
+    def settings(self):
+        return self.registry['settings']
+
+    @property
+    def paths(self):
+        return self.registry['paths']
 
 
 class ImpafRequest(Request):
