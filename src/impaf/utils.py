@@ -1,9 +1,3 @@
-class Cachable(object):
-
-    def _init_cache(self):
-        self._cache = {}
-
-
 def cached(fun):
     name = fun.__name__
 

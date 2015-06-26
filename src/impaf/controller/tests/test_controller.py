@@ -38,6 +38,9 @@ class ExampleController(Controller):
         super()._before_quit()
         self.runned['_before_quit'] = True
 
+    def _get_request_cls(self):
+        return lambda x: x
+
 
 class ControllerFixtures(object):
 

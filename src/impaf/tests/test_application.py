@@ -36,7 +36,19 @@ class TestApplication(object):
         with patcher as mock:
             yield mock
 
-    def test_create_app(self, app, mSettingsFactory, mConfigurator):
+    @yield_fixture
+    def mimport_module(self):
+        patcher = patch('impaf.application.import_module')
+        with patcher as mock:
+            yield mock
+
+    def test_create_app(
+        self,
+        app,
+        mSettingsFactory,
+        mConfigurator,
+        mimport_module,
+    ):
         '''
         ._create_app should:
             - generate settings
@@ -49,9 +61,11 @@ class TestApplication(object):
         paths = MagicMock()
         get_for.return_value = (settings, paths)
         mConfigurator.return_value.registry = {}
+        mimport_module.return_value.__file__ = 'path'
 
         app._create_app({'base': 'settings'}, 'uwsgi')
 
+        mimport_module.assert_called_once_with('module')
         assert app.settings == settings
         assert app.paths == paths
         mConfigurator.assert_called_once_with(
@@ -69,7 +83,7 @@ class TestApplication(object):
         '''
         app.config = MagicMock()
 
-        result = app.run_uwsgi({'base': 'settings'})
+        result = app({'base': 'settings'})
         assert result == app.config.make_wsgi_app.return_value
         m_create_app.assert_called_once_with({'base': 'settings'}, 'uwsgi')
 
