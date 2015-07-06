@@ -30,5 +30,5 @@ class TestWidget(object):
         widget.mrequest.assert_called_once_with(mrequest)
         assert widget.context == {
             'request': widget.mrequest.return_value,
-            'self': widget,
+            'widget': widget,
         }

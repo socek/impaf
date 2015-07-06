@@ -10,5 +10,5 @@ class Widget(Requestable):
     def _create_context(self):
         self.context = {
             'request': self.request,
-            'self': self,
+            'widget': self,
         }
