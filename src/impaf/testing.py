@@ -1,6 +1,8 @@
 from mock import MagicMock
+from mock import patch
 
 from pytest import fixture
+from pytest import yield_fixture
 
 
 class RequestFixture(object):
@@ -65,3 +67,15 @@ class ControllerFixture(RequestFixture):
     @fixture
     def context(self):
         return {}
+
+    @yield_fixture
+    def mredirect(self, controller):
+        patcher = patch.object(controller, 'redirect')
+        with patcher as mock:
+            yield mock
+
+    @yield_fixture
+    def madd_widget(self, controller):
+        patcher = patch.object(controller, 'add_widget')
+        with patcher as mock:
+            yield mock
