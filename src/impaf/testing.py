@@ -5,33 +5,60 @@ from pytest import fixture
 from pytest import yield_fixture
 
 
-class RequestFixture(object):
+class BaseFixture(object):
+
+    @fixture
+    def testable(self):
+        return self._prepere_testable(self._testable_cls)
+
+    _testable_cls = None
+
+    def _prepere_testable(self, cls):
+        return cls()
+
+
+class MockedDict(dict):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._mock = MagicMock()
+
+    def __getattr__(self, name):
+        return getattr(self._mock, name)
+
+
+class RequestFixture(BaseFixture):
 
     @fixture
     def mrequest(self):
         return MagicMock()
 
     @fixture
-    def registry(self):
-        return {
+    def registry(self, mrequest):
+        mrequest.registry = MockedDict({
             'settings': {},
             'paths': {},
-        }
+        })
+        return mrequest.registry
 
     @fixture
-    def POST(self):
-        return {}
+    def POST(self, mrequest):
+        mrequest.POST = MockedDict({})
+        return mrequest.POST
 
     @fixture
-    def GET(self):
-        return {}
+    def GET(self, mrequest):
+        mrequest.GET = MockedDict({})
+        return mrequest.GET
 
     @fixture
-    def matchdict(self):
-        return {}
+    def matchdict(self, mrequest):
+        mrequest.matchdict = MockedDict({})
+        return mrequest.matchdict
 
     @fixture
     def mroute_path(self, mrequest):
+        mrequest.route_path = MockedDict({})
         return mrequest.route_path
 
     @fixture
@@ -45,37 +72,43 @@ class RequestFixture(object):
 
 class ControllerFixture(RequestFixture):
 
-    def _cls_controller(self):
-        pass
-
-    def _prepere_controller(self, cls, context):
-        def set_request(self, request):
-            self.request = request
-        cls._convert_request = set_request
-        cls.context = context
-
     @fixture
-    def root_factory(self):
+    def mroot_factory(self):
         return MagicMock()
-
-    @fixture
-    def controller(self, root_factory, mrequest, context):
-        cls = self._cls_controller()
-        self._prepere_controller(cls, context)
-        return cls(root_factory, mrequest)
 
     @fixture
     def context(self):
         return {}
 
+    @fixture
+    def testable(self, mroot_factory, mrequest, context):
+        cls = self._testable_cls
+        self._prepere_controller_cls(cls)
+        return self._prepere_testable(
+            cls,
+            mroot_factory,
+            mrequest,
+            context,
+        )
+
+    def _prepere_controller_cls(self, cls):
+        def set_request(self, request):
+            self.request = request
+        cls._convert_request = set_request
+
+    def _prepere_testable(self, cls, mroot_factory, mrequest, context):
+        obj = cls(mroot_factory, mrequest)
+        obj.context = context
+        return obj
+
     @yield_fixture
-    def mredirect(self, controller):
-        patcher = patch.object(controller, 'redirect')
+    def mredirect(self, testable):
+        patcher = patch.object(testable, 'redirect')
         with patcher as mock:
             yield mock
 
     @yield_fixture
-    def madd_widget(self, controller):
-        patcher = patch.object(controller, 'add_widget')
+    def madd_widget(self, testable):
+        patcher = patch.object(testable, 'add_widget')
         with patcher as mock:
             yield mock
