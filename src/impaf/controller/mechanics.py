@@ -19,7 +19,6 @@ class ControllerMechanics(Requestable):
             self._before_make()
             self._make()
             self._after_make()
-            self._create_widgets()
             return self._get_response()
         except QuitController as end:
             self._before_quit()
