@@ -7,7 +7,10 @@ class ControllerUtils(object):
 
     def redirect(self, to, quit=False, **kwargs):
         url = self.request.route_url(to, **kwargs)
-        self.response = HTTPFound(location=url)
+        self.response = HTTPFound(
+            location=url,
+            headers=self.request.response.headerlist,
+        )
         if quit:
             raise QuitController(self.response)
 
