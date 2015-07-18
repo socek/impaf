@@ -35,10 +35,19 @@ class Routing(object):
     def config(self):
         return self.application.config
 
+    @property
+    def paths(self):
+        return self.application.paths
+
     def read_from_file(self, path):
         parser = RouteYamlParser(path)
         for route in parser.parse():
             self.add(**route)
+
+    def read_from_dotted(self, path):
+        self.read_from_file(
+            self.paths.get_path_dotted(path)
+        )
 
     def add(self, controller, route, url, *args, **kwargs):
         self.config.add_route(
@@ -66,6 +75,9 @@ class Routing(object):
         value = getattr(controller, name, None)
         if value:
             kwargs[name] = value
+
+    def make(self):
+        pass
 
 
 class RouteYamlParser(object):

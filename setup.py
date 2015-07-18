@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 install_requires = [
     'pyramid',
-    'morfdict',
+    'morfdict>=0.3.7',
     'pytest-cov',
     'pytest',
     'sphinx',
