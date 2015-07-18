@@ -147,7 +147,8 @@ class TestControllerUtils(ControllerFixtures):
 
         assert controller.response == mHTTPFound.return_value
         mHTTPFound.assert_called_once_with(
-            location=mrequest.route_url.return_value
+            location=mrequest.route_url.return_value,
+            headers=mrequest.response.headerlist,
         )
         mrequest.route_url.assert_called_once_with(
             'somewhere',
