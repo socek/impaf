@@ -4,6 +4,8 @@ from mock import patch
 from pytest import fixture
 from pytest import yield_fixture
 
+from .dict import MockedDict
+
 
 class BaseFixture(object):
 
@@ -15,16 +17,6 @@ class BaseFixture(object):
 
     def _prepere_testable(self, cls):
         return cls()
-
-
-class MockedDict(dict):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._mock = MagicMock()
-
-    def __getattr__(self, name):
-        return getattr(self._mock, name)
 
 
 class RequestFixture(BaseFixture):
