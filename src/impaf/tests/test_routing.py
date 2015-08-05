@@ -140,6 +140,10 @@ class TestRouting(object):
     def mconfig(self, mapp):
         return mapp.config
 
+    @fixture
+    def mpaths(self, mapp):
+        return mapp.paths
+
     @yield_fixture
     def madd(self, routing):
         patcher = patch.object(routing, 'add')
@@ -149,6 +153,12 @@ class TestRouting(object):
     @yield_fixture
     def madd_view(self, routing):
         patcher = patch.object(routing, 'add_view')
+        with patcher as mock:
+            yield mock
+
+    @yield_fixture
+    def mread_from_file(self, routing):
+        patcher = patch.object(routing, 'read_from_file')
         with patcher as mock:
             yield mock
 
@@ -182,4 +192,12 @@ class TestRouting(object):
             'impaf.tests.test_routing.ExampleController',
             route_name='something',
             renderer='myrenderer',
+        )
+
+    def test_read_from_dotted(self, routing, mpaths, mread_from_file):
+        routing.read_from_dotted('my.dotted.path')
+
+        mpaths.get_path_dotted.assert_called_once_with('my.dotted.path')
+        mread_from_file.assert_called_once_with(
+            mpaths.get_path_dotted.return_value
         )

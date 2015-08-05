@@ -53,7 +53,7 @@ class RequestCase(TestCase):
         return MagicMock()
 
     @cache
-    def registry(self):
+    def mregistry(self):
         self.mrequest().registry = MockedDict({
             'settings': {},
             'paths': {},
@@ -61,17 +61,17 @@ class RequestCase(TestCase):
         return self.mrequest().registry
 
     @cache
-    def POST(self):
+    def mPOST(self):
         self.mrequest().POST = MockedDict({})
         return self.mrequest().POST
 
     @cache
-    def GET(self):
+    def mGET(self):
         self.mrequest().GET = MockedDict({})
         return self.mrequest().GET
 
     @cache
-    def matchdict(self):
+    def mmatchdict(self):
         self.mrequest().matchdict = MockedDict({})
         return self.mrequest().matchdict
 
@@ -81,11 +81,11 @@ class RequestCase(TestCase):
         return self.mrequest().route_path
 
     @cache
-    def settings(self,):
+    def msettings(self,):
         return self.registry()['settings']
 
     @cache
-    def paths(self):
+    def mpaths(self):
         return self.registry()['paths']
 
 

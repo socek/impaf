@@ -24,7 +24,6 @@ def cache(method='test'):
                 cache = self._instant_cache = {}
 
             if cache_key not in cache:
-                print(cache_key)
                 cache[cache_key] = fun(self, *args, **kwargs)
 
             return cache[cache_key]
