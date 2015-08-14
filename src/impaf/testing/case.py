@@ -100,6 +100,11 @@ class ControllerCase(RequestCase):
         return {}
 
     @cache
+    def matchdict(self):
+        self.mrequest().matchdict = {}
+        return self.mrequest().matchdict
+
+    @cache
     def object(self):
         cls = self._object_cls
         self._prepere_controller_cls(cls)
