@@ -15,7 +15,7 @@ install_requires = [
 if __name__ == '__main__':
     setup(
         name='impaf',
-        version='0.1',
+        version='0.1.1',
         description='Inherit Me Please Anti Framework',
         url='https://github.com/socek/impaf',
         license='Apache License 2.0',

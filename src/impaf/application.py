@@ -8,7 +8,9 @@ from .routing import Routing
 
 
 class Application(object):
-    _routing_cls = Routing
+
+    class Config(object):
+        routing_cls = Routing
 
     def __init__(self, module):
         self.module = module
@@ -72,7 +74,7 @@ class Application(object):
         registry['paths'] = self.paths
 
     def _create_routing(self):
-        self.routing = self._routing_cls(self)
+        self.routing = self.Config.routing_cls(self)
         self.routing.make()
 
     def _return_wsgi_app(self):
