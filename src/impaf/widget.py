@@ -12,3 +12,7 @@ class Widget(Requestable):
             'request': self.request,
             'widget': self,
         }
+
+    def add_widget(self, name, obj):
+        obj.feed_request(self.request)
+        self.context[name] = obj
