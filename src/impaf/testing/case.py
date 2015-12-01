@@ -41,8 +41,8 @@ class TestCase(object):
 class PyTestCase(TestCase):
 
     @fixture(autouse=True)
-    def setUp(self, request):
-        super().setUp()
+    def pytest_setup(self, request):
+        self.setUp()
         request.addfinalizer(self.tearDown)
 
 
