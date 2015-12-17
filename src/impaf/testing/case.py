@@ -77,7 +77,6 @@ class RequestCase(TestCase):
 
     @cache
     def mroute_path(self):
-        self.mrequest().route_path = MockedDict({})
         return self.mrequest().route_path
 
     @cache
